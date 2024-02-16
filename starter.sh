@@ -26,6 +26,10 @@ import (
 )
 
 var ENV = env.NewServerEnv()
+
+var LOGGER = logger.NewLogger(&logger.LoggerConfig{
+	AppName: "charme-be",
+})
 EOT
 
 cat <<EOT >> app/controllers/auth.go
@@ -37,6 +41,49 @@ import (
 
 func Auth() *controller.Controller {
     return controller.NewController("v1", "auth")
+}
+EOT
+
+cat <<EOT >> app/middlewares/basic_auth.go
+package middlewares
+
+import (
+	"$folder_name/app/config"
+
+	errormessage "github.com/cntech-io/cntechkit-gogin/v2/error-message"
+	"github.com/cntech-io/cntechkit-gogin/v2/response"
+	"github.com/gin-gonic/gin"
+)
+
+func BasicAuth() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		username, password, ok := c.Request.BasicAuth()
+		if !ok || username == "" || password == "" {
+			config.LOGGER.Warn("invalid basic auth header")
+			c.JSON(response.New().BadRequest(errormessage.ERR_INVALID_BASIC_AUTH_HEADER))
+			c.Abort()
+		}
+		c.Next()
+	}
+}
+EOT
+
+cat <<EOT >> app/middlewares/authenticate_user.go
+package middlewares
+
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+)
+
+func AuthenticateUser() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		username, password, _ := c.Request.BasicAuth()
+		// TODO: verify user
+		fmt.Println(username, password)
+		c.Next()
+	}
 }
 EOT
 
