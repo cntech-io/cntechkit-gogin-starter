@@ -23,6 +23,8 @@ package config
 
 import (
     "github.com/cntech-io/cntechkit-go/v2/env"
+    "github.com/cntech-io/cntechkit-go/v2/logger"
+
 )
 
 var ENV = env.NewServerEnv()
