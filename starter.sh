@@ -65,14 +65,15 @@ import (
 )
 
 func main() {
-    fmt.Println("Hello, Go Gin!")
     app.CreateServer().Run()
 }
 EOT
 
-
-
-
+cat <<EOT >> .env
+DEBUG_MODE_FLAG=
+APP_PORT=
+TRUSTED_PROXIES=
+EOT
 
 go mod tidy
 
