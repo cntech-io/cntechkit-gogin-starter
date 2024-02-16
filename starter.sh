@@ -60,7 +60,6 @@ cat <<EOT >> main.go
 package main
 
 import (
-    "fmt"
     "$folder_name/app"
 )
 
