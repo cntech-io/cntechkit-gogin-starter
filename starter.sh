@@ -82,7 +82,7 @@ import (
 func AuthenticateUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		username, password, _ := c.Request.BasicAuth()
-		// TODO: verify user
+		// TODO: authenticate user
 		fmt.Println(username, password)
 		c.Next()
 	}
