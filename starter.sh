@@ -123,6 +123,10 @@ APP_PORT=
 TRUSTED_PROXIES=
 EOT
 
+cat <<EOT >> .gitignore
+.env
+EOT
+
 cat <<EOT >> Dockerfile
 FROM golang:1.19-buster as builder
 WORKDIR /app
